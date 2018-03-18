@@ -5,11 +5,6 @@
 [ext_resource path="res://assets/landing pad.png" type="Texture" id=3]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=4]
 
-[sub_resource type="RectangleShape2D" id=1]
-
-custom_solver_bias = 0.0
-extents = Vector2( 627.834, 10 )
-
 [sub_resource type="RectangleShape2D" id=2]
 
 custom_solver_bias = 0.0
@@ -24,6 +19,11 @@ extents = Vector2( 11.5092, 308.523 )
 
 custom_solver_bias = 0.0
 extents = Vector2( 512.189, 10 )
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 627.834, 10 )
 
 [sub_resource type="RectangleShape2D" id=5]
 
@@ -44,12 +44,41 @@ extents = Vector2( 551.188, 4.05951 )
 
 script = ExtResource( 1 )
 
-[node name="Surface" type="StaticBody2D" parent="." index="0"]
+[node name="Bounds" type="StaticBody2D" parent="." index="0"]
 
 position = Vector2( 512.488, 570.891 )
 input_pickable = false
 collision_layer = 1
-collision_mask = 12
+collision_mask = 1
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+
+[node name="Wall Left" type="CollisionShape2D" parent="Bounds" index="0"]
+
+visible = false
+position = Vector2( -522.911, -308.518 )
+shape = SubResource( 2 )
+
+[node name="Wall Right" type="CollisionShape2D" parent="Bounds" index="1"]
+
+visible = false
+position = Vector2( 525.003, -310.609 )
+shape = SubResource( 3 )
+
+[node name="Wall Top" type="CollisionShape2D" parent="Bounds" index="2"]
+
+visible = false
+position = Vector2( 1.0459, -584.615 )
+shape = SubResource( 4 )
+
+[node name="Surface" type="StaticBody2D" parent="." index="1"]
+
+position = Vector2( 512.488, 570.891 )
+input_pickable = false
+collision_layer = 1
+collision_mask = 8
 constant_linear_velocity = Vector2( 0, 0 )
 constant_angular_velocity = 0.0
 friction = 1.0
@@ -68,30 +97,12 @@ position = Vector2( -6.10352e-05, 49.1122 )
 scale = Vector2( 1, 3.58863 )
 shape = SubResource( 1 )
 
-[node name="Wall Left" type="CollisionShape2D" parent="Surface" index="2"]
-
-visible = false
-position = Vector2( -522.911, -308.518 )
-shape = SubResource( 2 )
-
-[node name="Wall Right" type="CollisionShape2D" parent="Surface" index="3"]
-
-visible = false
-position = Vector2( 525.003, -310.609 )
-shape = SubResource( 3 )
-
-[node name="Wall Top" type="CollisionShape2D" parent="Surface" index="4"]
-
-visible = false
-position = Vector2( 1.0459, -584.615 )
-shape = SubResource( 4 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Surface" index="5"]
+[node name="Pad Collider" type="CollisionShape2D" parent="Surface" index="2"]
 
 position = Vector2( -306.52, 8.56732 )
 shape = SubResource( 5 )
 
-[node name="LandingPad" type="Area2D" parent="." index="1"]
+[node name="LandingPad" type="Area2D" parent="." index="2"]
 
 position = Vector2( 208.796, 542.87 )
 input_pickable = true
@@ -117,17 +128,17 @@ position = Vector2( -3.40401, 33.6535 )
 scale = Vector2( 0.835968, 1 )
 shape = SubResource( 6 )
 
-[node name="Player" parent="." index="2" instance=ExtResource( 4 )]
+[node name="Player" parent="." index="3" instance=ExtResource( 4 )]
 
-position = Vector2( 522.708, 512.488 )
+position = Vector2( 522.708, 518.488 )
 collision_layer = 8
-collision_mask = 3
+collision_mask = 7
 mass = 1.0
 bounce = 0.1
-_sections_unfolded = [ "Collision" ]
 
-[node name="HUD" type="Panel" parent="." index="3"]
+[node name="HUD" type="Panel" parent="." index="4"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -298,7 +309,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="Ground" type="Area2D" parent="." index="4"]
+[node name="Ground" type="Area2D" parent="." index="5"]
 
 visible = false
 position = Vector2( 516.296, 580.833 )
@@ -317,8 +328,8 @@ _sections_unfolded = [ "Collision" ]
 position = Vector2( 6.43982, -2.84723 )
 shape = SubResource( 7 )
 
-[connection signal="body_entered" from="LandingPad" to="." method="_on_LandingPad_body_entered"]
+[connection signal="crashed" from="Player" to="." method="_on_Player_crashed"]
 
-[connection signal="body_entered" from="Ground" to="." method="_on_Ground_body_entered"]
+[connection signal="landed" from="Player" to="." method="_on_Player_landed"]
 
 

@@ -1,2 +1,4 @@
 *.kra~
-
+*.import
+*.png~
+.DS_Store
