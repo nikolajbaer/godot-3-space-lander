@@ -17,6 +17,9 @@ var landed = false
 
 var BUMP_MIN = 15
 var CRASH_MIN = 50
+var engine
+var lthrust
+var rthrust
 
 signal crashed
 signal landed
@@ -26,6 +29,9 @@ func _ready():
     crash_sound = $RocketCrashSound
     bump_sound = $RocketThumpSound
     burn_sound = $RocketBurnSound
+    engine = $Engine
+    lthrust = $LeftThruster
+    rthrust = $RightThruster
     fuel = FUEL_MAX
 
 func fuel_percent():
@@ -33,30 +39,38 @@ func fuel_percent():
     
 func _process(delta):
     
-    if fuel > 0:       
+    if fuel > 0 and not landed:       
         var rotation_dir = 0.0
         if Input.is_action_pressed("ui_left"):
+            rthrust.emitting = true
             fuel -= THRUSTER_FUEL
             rotation_dir -= 0.05
+        else:
+            rthrust.emitting = false
         if Input.is_action_pressed("ui_right"):
             fuel -= THRUSTER_FUEL
             rotation_dir += 0.05
+            lthrust.emitting = true
+        else:
+            lthrust.emitting = false
           
         set_applied_torque(rotation_dir * torque)
             
         if Input.is_action_pressed("ui_up"):
-            $Sprite.animation = "burn"
+            engine.emitting = true
             fuel -= BOOST_FUEL
             set_applied_force(thrust.rotated(rotation))
             if not burn_sound.playing:
                 burn_sound.play()
         else:
-            $Sprite.animation = "default"
+            engine.emitting = false
             set_applied_force(Vector2())
             burn_sound.stop()  
     else:
         burn_sound.stop()
-        $Sprite.animation = "default"
+        engine.emitting = false
+        lthrust.emitting = false
+        rthrust.emitting = false
         set_applied_force(Vector2())    
         set_applied_torque(0)  
 
@@ -85,7 +99,7 @@ func _physics_process(delta):
                 emit_signal("bumped",v) # TODO dust
                 bumped = true
 
-    if landing and v < 1 and angular_velocity < 1:
+    if landing and v < 1 and angular_velocity < 1 and not crashing and not crashed:
         landed = true
         emit_signal("landed")
 
@@ -100,7 +114,7 @@ func _physics_process(delta):
         bumping = true
         if not crashing: play_bump()
     if not bumped: bumping = false
-    if not crashed: crashing = false
+
     
         
 

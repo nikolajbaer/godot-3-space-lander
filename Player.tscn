@@ -1,26 +1,156 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
-[ext_resource path="res://assets/rocket.png" type="Texture" id=2]
-[ext_resource path="res://assets/rocket1.png" type="Texture" id=3]
-[ext_resource path="res://assets/rocket2.png" type="Texture" id=4]
-[ext_resource path="res://assets/rocket_burn.wav" type="AudioStream" id=5]
-[ext_resource path="res://assets/rocket_thump.wav" type="AudioStream" id=6]
-[ext_resource path="res://assets/rocket_crash.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/radial.png" type="Texture" id=2]
+[ext_resource path="res://assets/rocket.png" type="Texture" id=3]
+[ext_resource path="res://assets/rocket_burn.wav" type="AudioStream" id=4]
+[ext_resource path="res://assets/rocket_thump.wav" type="AudioStream" id=5]
+[ext_resource path="res://assets/rocket_crash.wav" type="AudioStream" id=6]
 
-[sub_resource type="SpriteFrames" id=1]
+[sub_resource type="Curve" id=12]
 
-animations = [ {
-"frames": [ ExtResource( 2 ) ],
-"loop": true,
-"name": "default",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 3 ), ExtResource( 4 ) ],
-"loop": true,
-"name": "burn",
-"speed": 100.0
-} ]
+min_value = 0.0
+max_value = 100.0
+bake_resolution = 100
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.997447, 100 ), 415.409, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=13]
+
+flags = 4
+width = 2048
+curve = SubResource( 12 )
+
+[sub_resource type="Curve" id=3]
+
+min_value = 0.0
+max_value = 1.0
+bake_resolution = 100
+_data = [ Vector2( 0.00255308, 0.092128 ), 0.0, 0.594644, 0, 0, Vector2( 0.913458, 0.967561 ), 3.09035, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=4]
+
+flags = 4
+width = 2048
+curve = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=5]
+
+render_priority = 0
+trail_divisor = 1
+emission_shape = 0
+flag_align_y = false
+flag_rotate_y = false
+flag_disable_z = true
+spread = 45.0
+flatness = 0.0
+gravity = Vector3( 0, 98, 0 )
+initial_velocity = 1.0
+initial_velocity_random = 0.0
+angular_velocity = 7.0
+angular_velocity_random = 0.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 0.0
+linear_accel_random = 0.0
+radial_accel = 0.0
+radial_accel_random = 0.0
+tangential_accel = 0.0
+tangential_accel_random = 0.0
+damping = 1.0
+damping_random = 0.0
+damping_curve = SubResource( 13 )
+angle = 0.0
+angle_random = 0.0
+scale = 1.0
+scale_random = 0.0
+scale_curve = SubResource( 4 )
+color = Color( 1, 1, 1, 1 )
+hue_variation = 0.0
+hue_variation_random = 0.0
+anim_speed = 0.0
+anim_speed_random = 0.0
+anim_offset = 0.0
+anim_offset_random = 0.0
+anim_loop = false
+_sections_unfolded = [ "Color", "Damping", "Hue Variation", "Scale" ]
+
+[sub_resource type="Curve" id=6]
+
+min_value = -360.0
+max_value = 360.0
+bake_resolution = 100
+_data = [ Vector2( 0, 272.18 ), 0.0, 0.0, 0, 0, Vector2( 0.999495, -329.481 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=7]
+
+flags = 4
+width = 2048
+curve = SubResource( 6 )
+
+[sub_resource type="Gradient" id=8]
+
+offsets = PoolRealArray( 0, 0.230769, 1 )
+colors = PoolColorArray( 0.0434418, 0.512895, 0.855469, 1, 0.53125, 0.769287, 1, 1, 0, 0.325317, 0.640625, 0.0110588 )
+
+[sub_resource type="GradientTexture" id=9]
+
+flags = 4
+gradient = SubResource( 8 )
+width = 2048
+
+[sub_resource type="Curve" id=10]
+
+min_value = 0.0
+max_value = 1.0
+bake_resolution = 100
+_data = [ Vector2( 0.00187025, 0.718858 ), 0.0, 2.80168, 0, 0, Vector2( 0.996081, 0.0324395 ), -2.85041, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=11]
+
+flags = 4
+width = 2048
+curve = SubResource( 10 )
+
+[sub_resource type="ParticlesMaterial" id=2]
+
+render_priority = 0
+trail_divisor = 1
+emission_shape = 0
+flag_align_y = false
+flag_rotate_y = false
+flag_disable_z = true
+spread = 45.0
+flatness = 0.0
+gravity = Vector3( 0, 98, 0 )
+initial_velocity = 0.0
+initial_velocity_random = 0.0
+angular_velocity = 1.0
+angular_velocity_random = 0.0
+angular_velocity_curve = SubResource( 7 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 0.0
+linear_accel_random = 0.0
+radial_accel = 0.0
+radial_accel_random = 0.0
+tangential_accel = 0.0
+tangential_accel_random = 0.0
+damping = 0.11
+damping_random = 0.0
+angle = 0.0
+angle_random = 0.0
+scale = 0.67
+scale_random = 0.1
+scale_curve = SubResource( 11 )
+color_ramp = SubResource( 9 )
+hue_variation = 0.0
+hue_variation_random = 0.0
+anim_speed = 0.0
+anim_speed_random = 0.0
+anim_offset = 0.0
+anim_offset_random = 0.0
+anim_loop = false
+_sections_unfolded = [ "Angular Velocity", "Animation", "Color", "Damping", "Hue Variation", "Scale" ]
 
 [node name="Player" type="RigidBody2D"]
 
@@ -45,20 +175,78 @@ angular_damp = -1.0
 script = ExtResource( 1 )
 _sections_unfolded = [ "Collision" ]
 
-[node name="Sprite" type="AnimatedSprite" parent="." index="0"]
+[node name="LeftThruster" type="Particles2D" parent="." index="0"]
+
+position = Vector2( -11, -1 )
+rotation = 1.16428
+scale = Vector2( 0.25, 0.25 )
+emitting = true
+amount = 8
+lifetime = 0.95
+one_shot = false
+preprocess = 0.0
+speed_scale = 5.0
+explosiveness = 0.0
+randomness = 0.0
+fixed_fps = 0
+fract_delta = true
+visibility_rect = Rect2( -100, -100, 200, 200 )
+local_coords = true
+draw_order = 0
+process_material = SubResource( 5 )
+texture = ExtResource( 2 )
+normal_map = null
+h_frames = 1
+v_frames = 1
+_sections_unfolded = [ "Drawing", "Material", "Process Material", "Textures", "Time", "Transform", "Visibility" ]
+
+[node name="RightThruster" type="Particles2D" parent="." index="1"]
+
+position = Vector2( 12, -1 )
+rotation = -1.02044
+scale = Vector2( 0.25, 0.25 )
+emitting = true
+amount = 8
+lifetime = 0.95
+one_shot = false
+preprocess = 0.0
+speed_scale = 5.0
+explosiveness = 0.0
+randomness = 0.0
+fixed_fps = 0
+fract_delta = true
+visibility_rect = Rect2( -100, -100, 200, 200 )
+local_coords = true
+draw_order = 0
+process_material = SubResource( 5 )
+texture = ExtResource( 2 )
+normal_map = null
+h_frames = 1
+v_frames = 1
+_sections_unfolded = [ "Drawing", "Material", "Process Material", "Textures", "Time", "Transform", "Visibility" ]
+
+[node name="Sprite" type="Sprite" parent="." index="2"]
 
 scale = Vector2( 0.5, 0.5 )
-frames = SubResource( 1 )
-animation = "default"
-playing = true
+texture = ExtResource( 3 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." index="1"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." index="3"]
 
 build_mode = 0
 polygon = PoolVector2Array( -3.24759, 47.0195, 4.94199, 47.3019, 21.0388, 63.3987, 23.0156, 35.1588, 11.7196, 20.7564, 11.7196, -43.3484, 0.141205, -62.5515, -9.7428, -44.478, -10.0252, 20.7564, -21.0388, 35.4412, -21.3212, 63.6811 )
 
-[node name="RocketBurnSound" type="AudioStreamPlayer2D" parent="." index="2"]
+[node name="RocketBurnSound" type="AudioStreamPlayer2D" parent="." index="4"]
+
+stream = ExtResource( 4 )
+volume_db = 0.0
+autoplay = false
+max_distance = 2000.0
+attenuation = 1.0
+bus = "Master"
+area_mask = 1
+
+[node name="RocketThumpSound" type="AudioStreamPlayer2D" parent="." index="5"]
 
 stream = ExtResource( 5 )
 volume_db = 0.0
@@ -68,7 +256,7 @@ attenuation = 1.0
 bus = "Master"
 area_mask = 1
 
-[node name="RocketThumpSound" type="AudioStreamPlayer2D" parent="." index="3"]
+[node name="RocketCrashSound" type="AudioStreamPlayer2D" parent="." index="6"]
 
 stream = ExtResource( 6 )
 volume_db = 0.0
@@ -78,14 +266,28 @@ attenuation = 1.0
 bus = "Master"
 area_mask = 1
 
-[node name="RocketCrashSound" type="AudioStreamPlayer2D" parent="." index="4"]
+[node name="Engine" type="Particles2D" parent="." index="7"]
 
-stream = ExtResource( 7 )
-volume_db = 0.0
-autoplay = false
-max_distance = 2000.0
-attenuation = 1.0
-bus = "Master"
-area_mask = 1
+position = Vector2( 0.855896, 55.635 )
+scale = Vector2( 0.8, 0.8 )
+emitting = true
+amount = 8
+lifetime = 0.71
+one_shot = false
+preprocess = 0.0
+speed_scale = 2.0
+explosiveness = 0.0
+randomness = 0.0
+fixed_fps = 0
+fract_delta = true
+visibility_rect = Rect2( -100, -100, 200, 200 )
+local_coords = true
+draw_order = 0
+process_material = SubResource( 2 )
+texture = ExtResource( 2 )
+normal_map = null
+h_frames = 1
+v_frames = 1
+_sections_unfolded = [ "Process Material", "Textures", "Time", "Transform" ]
 
 
