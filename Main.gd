@@ -7,6 +7,12 @@ var pad
 var player
 var start_pos
 
+# TODO
+# particle-system thruster / booster
+# title screen / Game Over / Restart
+# meteors
+# 
+
 func _ready():
     indicator = $HUD/FuelIndicator    
     speedometer = $HUD/Speedometer    
@@ -27,7 +33,7 @@ func init():
     
     
 func _process(delta):
-    var fuel = $Player.fuel
+    var fuel = player.fuel_percent()
 
     indicator.value = player.fuel
     speedometer.text = str(int(player.linear_velocity.length()))
@@ -37,5 +43,5 @@ func _process(delta):
 func _on_Player_crashed(v):
     $HUD/Message.text = "CRASHED at %0.0f!"%v
 
-func _on_Player_landed(v):
+func _on_Player_landed():
     $HUD/Message.text = "LANDED!"

@@ -110,8 +110,8 @@ gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
-collision_layer = 2
-collision_mask = 8
+collision_layer = 15
+collision_mask = 15
 audio_bus_override = false
 audio_bus_name = "Master"
 _sections_unfolded = [ "Collision" ]
@@ -124,21 +124,19 @@ texture = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LandingPad" index="1"]
 
-position = Vector2( -3.40401, 33.6535 )
+position = Vector2( -3.40401, 26.6535 )
 scale = Vector2( 0.835968, 1 )
 shape = SubResource( 6 )
 
 [node name="Player" parent="." index="3" instance=ExtResource( 4 )]
 
 position = Vector2( 522.708, 518.488 )
-collision_layer = 8
 collision_mask = 7
 mass = 1.0
 bounce = 0.1
 
 [node name="HUD" type="Panel" parent="." index="4"]
 
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -327,6 +325,8 @@ _sections_unfolded = [ "Collision" ]
 
 position = Vector2( 6.43982, -2.84723 )
 shape = SubResource( 7 )
+
+[connection signal="body_entered" from="LandingPad" to="Player" method="_on_LandingPad_body_entered"]
 
 [connection signal="crashed" from="Player" to="." method="_on_Player_crashed"]
 

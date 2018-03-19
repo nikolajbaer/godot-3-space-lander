@@ -9,8 +9,10 @@ var bump_sound
 var burn_sound
 var BOOST_FUEL = 0.4
 var THRUSTER_FUEL = 0.2
+var FUEL_MAX = 150
 var bumping = false
 var crashing = false
+var landing = false
 var landed = false
 
 var BUMP_MIN = 15
@@ -24,8 +26,11 @@ func _ready():
     crash_sound = $RocketCrashSound
     bump_sound = $RocketThumpSound
     burn_sound = $RocketBurnSound
-    fuel = 100
+    fuel = FUEL_MAX
 
+func fuel_percent():
+    return (self.fuel / FUEL_MAX) * 100
+    
 func _process(delta):
     
     if fuel > 0:       
@@ -67,7 +72,7 @@ func play_bump():
 func _physics_process(delta):
     var bodies = get_colliding_bodies()
     var v = self.linear_velocity.length()    
-    
+
     var crashed = false
     var bumped = false
     for b in bodies:
@@ -79,18 +84,11 @@ func _physics_process(delta):
             elif v > BUMP_MIN:
                 emit_signal("bumped",v) # TODO dust
                 bumped = true
-        elif body_name == "LandingPad":
-            if v < CRASH_MIN and v > BUMP_MIN:
-                bumped = true
-                landed = true
-                if not landed:
-                    emit_signal("landed",v)
-            elif v > CRASH_MIN:
-                crashed = true
-                emit_signal("crashed",v)            
-            else:   
-                if not landed:
-                    emit_signal("landed",v)
+
+    if landing and v < 1 and angular_velocity < 1:
+        landed = true
+        emit_signal("landed")
+
     # if we crash this step, and aren't already crashing
     # play the sound
     if crashed and not crashing:
@@ -105,3 +103,9 @@ func _physics_process(delta):
     if not crashed: crashing = false
     
         
+
+
+func _on_LandingPad_body_entered(body):
+    if landed: return
+    if body.get_name() != "Player": return
+    landing = true
