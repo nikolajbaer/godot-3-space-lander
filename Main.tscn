@@ -1,9 +1,11 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://assets/Surface.png" type="Texture" id=2]
 [ext_resource path="res://assets/landing pad.png" type="Texture" id=3]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/landed.png" type="Texture" id=5]
+[ext_resource path="res://assets/crash.png" type="Texture" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -40,12 +42,13 @@ extents = Vector2( 48.1798, 14.9722 )
 custom_solver_bias = 0.0
 extents = Vector2( 551.188, 4.05951 )
 
-[node name="Main" type="Node"]
+[node name="Main" type="Node" index="0"]
 
 script = ExtResource( 1 )
 
 [node name="Bounds" type="StaticBody2D" parent="." index="0"]
 
+editor/display_folded = true
 position = Vector2( 512.488, 570.891 )
 input_pickable = false
 collision_layer = 1
@@ -104,6 +107,7 @@ shape = SubResource( 5 )
 
 [node name="LandingPad" type="Area2D" parent="." index="2"]
 
+editor/display_folded = true
 position = Vector2( 208.796, 542.87 )
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
@@ -130,13 +134,14 @@ shape = SubResource( 6 )
 
 [node name="Player" parent="." index="3" instance=ExtResource( 4 )]
 
-position = Vector2( 522.708, 518.488 )
+position = Vector2( 907.974, 520.291 )
 collision_mask = 7
 mass = 1.0
 bounce = 0.1
 
 [node name="HUD" type="Panel" parent="." index="4"]
 
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.0
 anchor_right = 0.5
@@ -199,28 +204,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Margin", "custom_fonts", "custom_styles" ]
 
-[node name="Message" type="Label" parent="HUD" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 174.0
-margin_top = 246.0
-margin_right = 383.0
-margin_bottom = 270.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-align = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Speedometer" type="Label" parent="HUD" index="3"]
+[node name="Speedometer" type="Label" parent="HUD" index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -242,7 +226,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="SpeedName" type="Label" parent="HUD" index="4"]
+[node name="SpeedName" type="Label" parent="HUD" index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -263,7 +247,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="TiltName" type="Label" parent="HUD" index="5"]
+[node name="TiltName" type="Label" parent="HUD" index="4"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -284,7 +268,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="Tiltometer" type="Label" parent="HUD" index="6"]
+[node name="Tiltometer" type="Label" parent="HUD" index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -325,10 +309,80 @@ _sections_unfolded = [ "Collision" ]
 position = Vector2( 6.43982, -2.84723 )
 shape = SubResource( 7 )
 
+[node name="Splash" type="Control" parent="." index="6"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 277.0
+margin_top = 142.0
+margin_right = 724.0
+margin_bottom = 410.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+
+[node name="LandedButton" type="TextureButton" parent="Splash" index="0"]
+
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -160.5
+margin_top = -100.0
+margin_right = 159.5
+margin_bottom = 100.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 5 )
+_sections_unfolded = [ "Textures" ]
+
+[node name="CrashButton" type="TextureButton" parent="Splash" index="1"]
+
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -160.0
+margin_top = -100.0
+margin_right = 160.0
+margin_bottom = 100.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 6 )
+_sections_unfolded = [ "Textures" ]
+
 [connection signal="body_entered" from="LandingPad" to="Player" method="_on_LandingPad_body_entered"]
 
 [connection signal="crashed" from="Player" to="." method="_on_Player_crashed"]
 
 [connection signal="landed" from="Player" to="." method="_on_Player_landed"]
+
+[connection signal="pressed" from="Splash/LandedButton" to="." method="_on_LandedButton_pressed"]
+
+[connection signal="pressed" from="Splash/CrashButton" to="." method="_on_CrashButton_pressed"]
 
 
