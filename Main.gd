@@ -20,7 +20,9 @@ func _ready():
     pad = $LandingPad
     player = $Player
     start_pos = player.position
- 
+    $Splash.visible = false
+    $Splash/CrashButton.visible = false
+    $Splash/LandedButton.visible = false
     init()
     
 func init():
@@ -54,7 +56,17 @@ func _process(delta):
 
 
 func _on_Player_crashed(v):
-    $HUD/Message.text = "CRASHED at %0.0f!"%v
-
+    $Splash.visible = true
+    $Splash/CrashButton.visible = true
+	
 func _on_Player_landed():
-    $HUD/Message.text = "LANDED!"
+    $Splash.visible = true
+    $Splash/LandedButton.visible = true
+
+
+func _on_LandedButton_pressed():
+	get_tree().change_scene("res://Title.tscn")
+
+
+func _on_CrashButton_pressed():
+	get_tree().change_scene("res://Title.tscn")
