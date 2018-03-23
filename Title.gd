@@ -9,12 +9,15 @@ func _ready():
     # Initialization here
     pass
 
-#func _process(delta):
-#    # Called every frame. Delta is time since last frame.
-#    # Update game logic here.
-#    pass
+func _process(delta):
+	pass
 
 
-func _on_PlayButton_gui_input(ev):
-    print("Play Clicked")
-    pass # replace with function body
+func _on_PlayButton_pressed():
+	run_game()	
+
+			
+func run_game():
+	get_tree().change_scene("res://Main.tscn")
+
+		
