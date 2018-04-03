@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 
 # class member variables go here, for example:
 # var a = 2
@@ -10,7 +10,8 @@ func _ready():
     pass
 
 func _process(delta):
-	pass
+    if Input.is_action_pressed("ui_accept"):
+        run_game()
 
 
 func _on_PlayButton_pressed():

@@ -14,12 +14,15 @@ var bumping = false
 var crashing = false
 var landing = false
 var landed = false
+var starting_y
 
 var BUMP_MIN = 15
 var CRASH_MIN = 50
 var engine
 var lthrust
 var rthrust
+var camera
+var screen_height
 
 signal crashed
 signal landed
@@ -30,9 +33,24 @@ func _ready():
     bump_sound = $RocketThumpSound
     burn_sound = $RocketBurnSound
     engine = $Engine
+    camera = $Camera2D
     lthrust = $LeftThruster
     rthrust = $RightThruster
     fuel = FUEL_MAX
+    starting_y = position.y
+    screen_height = camera.get_viewport().size.y
+
+func altitude():
+	return floor(abs(position.y - starting_y))
+
+func adjust_zoom():
+	if crashing: return
+	var v_y = camera.get_viewport().size.y
+	var z = 1 + ((altitude()*2) / v_y)
+	if z > 1:
+		camera.zoom = Vector2(z,z)
+	else:
+		camera.zoom = Vector2(1,1)
 
 func fuel_percent():
     return (self.fuel / FUEL_MAX) * 100
@@ -99,9 +117,13 @@ func _physics_process(delta):
                 emit_signal("bumped",v) # TODO dust
                 bumped = true
 
-    if landing and v < 1 and angular_velocity < 1 and not crashing and not crashed:
+    if landing and v < 1 and angular_velocity < 1 and abs(rotation_degrees) < 5 and not crashing and not crashed:
         landed = true
         emit_signal("landed")
+
+    if position.y > screen_height:
+        crashed = true
+        emit_signal("crashed",v)
 
     # if we crash this step, and aren't already crashing
     # play the sound

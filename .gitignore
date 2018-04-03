@@ -2,3 +2,4 @@
 *.import
 *.png~
 .DS_Store
+dist

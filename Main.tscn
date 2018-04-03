@@ -1,28 +1,32 @@
 [gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
-[ext_resource path="res://assets/Surface.png" type="Texture" id=2]
-[ext_resource path="res://assets/landing pad.png" type="Texture" id=3]
-[ext_resource path="res://Player.tscn" type="PackedScene" id=4]
-[ext_resource path="res://assets/landed.png" type="Texture" id=5]
-[ext_resource path="res://assets/crash.png" type="Texture" id=6]
+[ext_resource path="res://assets/landed.png" type="Texture" id=2]
+[ext_resource path="res://assets/crash.png" type="Texture" id=3]
+[ext_resource path="res://SpaceBackground.shader" type="Shader" id=4]
+[ext_resource path="res://assets/landing pad.png" type="Texture" id=5]
+[ext_resource path="res://Player.tscn" type="PackedScene" id=6]
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="ShaderMaterial" id=1]
 
-custom_solver_bias = 0.0
-extents = Vector2( 10, 306.431 )
+render_priority = 0
+shader = ExtResource( 4 )
+
+[sub_resource type="Shader" id=3]
+
+code = "shader_type canvas_item;
+
+
+void fragment() {
+	COLOR = vec4(0.7);
+}"
+
+[sub_resource type="ShaderMaterial" id=4]
+
+render_priority = 0
+shader = SubResource( 3 )
 
 [sub_resource type="RectangleShape2D" id=2]
-
-custom_solver_bias = 0.0
-extents = Vector2( 11.5092, 308.523 )
-
-[sub_resource type="RectangleShape2D" id=3]
-
-custom_solver_bias = 0.0
-extents = Vector2( 512.189, 10 )
-
-[sub_resource type="RectangleShape2D" id=4]
 
 custom_solver_bias = 0.0
 extents = Vector2( 627.834, 10 )
@@ -35,7 +39,7 @@ extents = Vector2( 41.5638, 5.53247 )
 [sub_resource type="RectangleShape2D" id=6]
 
 custom_solver_bias = 0.0
-extents = Vector2( 48.1798, 14.9722 )
+extents = Vector2( 53.3609, 14.9722 )
 
 [sub_resource type="RectangleShape2D" id=7]
 
@@ -46,102 +50,16 @@ extents = Vector2( 551.188, 4.05951 )
 
 script = ExtResource( 1 )
 
-[node name="Bounds" type="StaticBody2D" parent="." index="0"]
+[node name="HUDLayer" type="CanvasLayer" parent="." index="0"]
 
-editor/display_folded = true
-position = Vector2( 512.488, 570.891 )
-input_pickable = false
-collision_layer = 1
-collision_mask = 1
-constant_linear_velocity = Vector2( 0, 0 )
-constant_angular_velocity = 0.0
-friction = 1.0
-bounce = 0.0
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 
-[node name="Wall Left" type="CollisionShape2D" parent="Bounds" index="0"]
+[node name="HUD" type="Panel" parent="HUDLayer" index="0"]
 
-visible = false
-position = Vector2( -522.911, -308.518 )
-shape = SubResource( 1 )
-
-[node name="Wall Right" type="CollisionShape2D" parent="Bounds" index="1"]
-
-visible = false
-position = Vector2( 525.003, -310.609 )
-shape = SubResource( 2 )
-
-[node name="Wall Top" type="CollisionShape2D" parent="Bounds" index="2"]
-
-visible = false
-position = Vector2( 1.0459, -584.615 )
-shape = SubResource( 3 )
-
-[node name="Surface" type="StaticBody2D" parent="." index="1"]
-
-position = Vector2( 512.488, 570.891 )
-input_pickable = false
-collision_layer = 1
-collision_mask = 8
-constant_linear_velocity = Vector2( 0, 0 )
-constant_angular_velocity = 0.0
-friction = 1.0
-bounce = 0.0
-_sections_unfolded = [ "Collision" ]
-
-[node name="Surface" type="Sprite" parent="Surface" index="0"]
-
-position = Vector2( 1.73932, -334.173 )
-texture = ExtResource( 2 )
-_sections_unfolded = [ "Transform" ]
-
-[node name="Wall Bottom" type="CollisionShape2D" parent="Surface" index="1"]
-
-position = Vector2( -6.10352e-05, 49.1122 )
-scale = Vector2( 1, 3.58863 )
-shape = SubResource( 4 )
-
-[node name="Pad Collider" type="CollisionShape2D" parent="Surface" index="2"]
-
-position = Vector2( -320.52, 8.56732 )
-shape = SubResource( 5 )
-
-[node name="LandingPad" type="Area2D" parent="." index="2"]
-
-editor/display_folded = true
-position = Vector2( 208.796, 542.87 )
-input_pickable = true
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-collision_layer = 15
-collision_mask = 15
-audio_bus_override = false
-audio_bus_name = "Master"
-_sections_unfolded = [ "Collision" ]
-
-[node name="Sprite" type="Sprite" parent="LandingPad" index="0"]
-
-position = Vector2( -0.673859, 5.96973 )
-scale = Vector2( 0.438638, 0.438638 )
-texture = ExtResource( 3 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LandingPad" index="1"]
-
-position = Vector2( -3.40401, 26.6535 )
-scale = Vector2( 0.835968, 1 )
-shape = SubResource( 6 )
-
-[node name="Player" parent="." index="3" instance=ExtResource( 4 )]
-
-position = Vector2( 927.155, 518.488 )
-collision_mask = 7
-mass = 1.0
-bounce = 0.1
-
-[node name="HUD" type="Panel" parent="." index="4"]
-
-editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.0
 anchor_right = 0.5
@@ -156,7 +74,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 
-[node name="FuelIndicator" type="ProgressBar" parent="HUD" index="0"]
+[node name="FuelIndicator" type="ProgressBar" parent="HUDLayer/HUD" index="0"]
 
 anchor_left = 0.5
 anchor_top = 0.5
@@ -182,7 +100,7 @@ rounded = false
 percent_visible = true
 _sections_unfolded = [ "Theme", "custom_colors", "custom_fonts", "custom_styles" ]
 
-[node name="PropellantName" type="Label" parent="HUD" index="1"]
+[node name="PropellantName" type="Label" parent="HUDLayer/HUD" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.5
@@ -204,16 +122,16 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Margin", "custom_fonts", "custom_styles" ]
 
-[node name="Speedometer" type="Label" parent="HUD" index="2"]
+[node name="Speedometer" type="Label" parent="HUDLayer/HUD" index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 475.0
-margin_top = 12.0
-margin_right = 505.0
-margin_bottom = 26.0
+margin_left = 472.0
+margin_top = 7.0
+margin_right = 502.0
+margin_bottom = 21.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -226,16 +144,16 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="SpeedName" type="Label" parent="HUD" index="3"]
+[node name="SpeedName" type="Label" parent="HUDLayer/HUD" index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 437.0
-margin_top = 12.0
-margin_right = 477.0
-margin_bottom = 26.0
+margin_left = 434.0
+margin_top = 6.0
+margin_right = 474.0
+margin_bottom = 20.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -247,16 +165,16 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="TiltName" type="Label" parent="HUD" index="4"]
+[node name="TiltName" type="Label" parent="HUDLayer/HUD" index="4"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 437.0
-margin_top = 34.0
-margin_right = 477.0
-margin_bottom = 48.0
+margin_left = 434.0
+margin_top = 23.0
+margin_right = 474.0
+margin_bottom = 37.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -268,16 +186,16 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="Tiltometer" type="Label" parent="HUD" index="5"]
+[node name="Tiltometer" type="Label" parent="HUDLayer/HUD" index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 465.0
-margin_top = 34.0
-margin_right = 505.0
-margin_bottom = 48.0
+margin_left = 464.0
+margin_top = 20.0
+margin_right = 504.0
+margin_bottom = 34.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -290,35 +208,59 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="Ground" type="Area2D" parent="." index="5"]
-
-visible = false
-position = Vector2( 516.296, 580.833 )
-input_pickable = true
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-collision_mask = 8
-audio_bus_override = false
-audio_bus_name = "Master"
-_sections_unfolded = [ "Collision" ]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" index="0"]
-
-position = Vector2( 6.43982, -2.84723 )
-shape = SubResource( 7 )
-
-[node name="Splash" type="Control" parent="." index="6"]
+[node name="AltName" type="Label" parent="HUDLayer/HUD" index="6"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 277.0
-margin_top = 142.0
-margin_right = 724.0
-margin_bottom = 410.0
+margin_left = 434.0
+margin_top = 40.0
+margin_right = 474.0
+margin_bottom = 54.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Alt ="
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Altimeter" type="Label" parent="HUDLayer/HUD" index="7"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 464.0
+margin_top = 40.0
+margin_right = 504.0
+margin_bottom = 54.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "0"
+align = 2
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Splash" type="Control" parent="HUDLayer" index="1"]
+
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -223.5
+margin_top = -134.0
+margin_right = 223.5
+margin_bottom = 134.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -326,7 +268,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 
-[node name="LandedButton" type="TextureButton" parent="Splash" index="0"]
+[node name="LandedButton" type="TextureButton" parent="HUDLayer/Splash" index="0"]
 
 visible = false
 anchor_left = 0.5
@@ -348,10 +290,10 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 5 )
+texture_normal = ExtResource( 2 )
 _sections_unfolded = [ "Textures" ]
 
-[node name="CrashButton" type="TextureButton" parent="Splash" index="1"]
+[node name="CrashButton" type="TextureButton" parent="HUDLayer/Splash" index="1"]
 
 anchor_left = 0.5
 anchor_top = 0.5
@@ -372,17 +314,186 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 6 )
+texture_normal = ExtResource( 3 )
 _sections_unfolded = [ "Textures" ]
+
+[node name="SpaceBg" type="CanvasLayer" parent="." index="1"]
+
+layer = -1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="SpaceBg" index="0"]
+
+layer = -1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+scroll_offset = Vector2( 0, 0 )
+scroll_base_offset = Vector2( 0, 0 )
+scroll_base_scale = Vector2( 1, 1 )
+scroll_limit_begin = Vector2( 0, 0 )
+scroll_limit_end = Vector2( 0, 0 )
+scroll_ignore_camera_zoom = true
+
+[node name="BgSurface" type="Panel" parent="SpaceBg/ParallaxBackground" index="0"]
+
+material = SubResource( 1 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -420.0
+margin_top = -100.0
+margin_right = 2510.0
+margin_bottom = 1530.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Material", "Rect", "Transform" ]
+
+[node name="Surface" type="StaticBody2D" parent="." index="2"]
+
+position = Vector2( 512.488, 570.891 )
+input_pickable = false
+collision_layer = 1
+collision_mask = 8
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+_sections_unfolded = [ "Collision" ]
+
+[node name="GroundTexture" type="Panel" parent="Surface" index="0"]
+
+material = SubResource( 4 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -2132.0
+margin_top = 13.0
+margin_right = 2108.0
+margin_bottom = 53.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Material" ]
+
+[node name="Ground" type="CollisionShape2D" parent="Surface" index="1"]
+
+position = Vector2( -2.48798, 49.109 )
+scale = Vector2( 1, 3.58863 )
+shape = SubResource( 2 )
+
+[node name="Pad Collider" type="CollisionShape2D" parent="Surface" index="2"]
+
+position = Vector2( -302.488, 14.8428 )
+scale = Vector2( 1.12199, 1.672 )
+shape = SubResource( 5 )
+
+[node name="LandingPad" type="Area2D" parent="." index="3"]
+
+position = Vector2( 208.796, 542.87 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+collision_layer = 15
+collision_mask = 15
+audio_bus_override = false
+audio_bus_name = "Master"
+_sections_unfolded = [ "Collision" ]
+
+[node name="Sprite" type="Sprite" parent="LandingPad" index="0"]
+
+position = Vector2( -0.673859, 5.96973 )
+scale = Vector2( 0.438638, 0.438638 )
+texture = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LandingPad" index="1"]
+
+position = Vector2( 1.20399, 37.13 )
+scale = Vector2( 0.835968, 1 )
+shape = SubResource( 6 )
+
+[node name="Player" parent="." index="4" instance=ExtResource( 6 )]
+
+position = Vector2( 927.155, 518.488 )
+collision_mask = 7
+mass = 1.0
+bounce = 0.1
+
+[node name="Ground" type="Area2D" parent="." index="5"]
+
+position = Vector2( 516.296, 580.833 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+collision_mask = 8
+audio_bus_override = false
+audio_bus_name = "Master"
+_sections_unfolded = [ "Collision" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" index="0"]
+
+position = Vector2( 6.43982, -2.84723 )
+shape = SubResource( 7 )
+
+[node name="PlayerTracker" type="Control" parent="." index="6"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Material", "Theme", "Visibility" ]
+
+[node name="TextureRect" type="TextureRect" parent="PlayerTracker" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 40.0
+margin_bottom = 40.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+stretch_mode = 0
+
+[connection signal="pressed" from="HUDLayer/Splash/LandedButton" to="." method="_on_LandedButton_pressed"]
+
+[connection signal="pressed" from="HUDLayer/Splash/CrashButton" to="." method="_on_CrashButton_pressed"]
 
 [connection signal="body_entered" from="LandingPad" to="Player" method="_on_LandingPad_body_entered"]
 
 [connection signal="crashed" from="Player" to="." method="_on_Player_crashed"]
 
 [connection signal="landed" from="Player" to="." method="_on_Player_landed"]
-
-[connection signal="pressed" from="Splash/LandedButton" to="." method="_on_LandedButton_pressed"]
-
-[connection signal="pressed" from="Splash/CrashButton" to="." method="_on_CrashButton_pressed"]
 
 

@@ -3,10 +3,11 @@ extends Node
 var indicator
 var speedometer
 var tiltometer
+var altimeter
 var pad
 var player
 var start_pos
-
+var game_over
 # TODO
 # particle-system thruster / booster
 # title screen / Game Over / Restart
@@ -14,15 +15,17 @@ var start_pos
 # 
 
 func _ready():
-    indicator = $HUD/FuelIndicator    
-    speedometer = $HUD/Speedometer    
-    tiltometer = $HUD/Tiltometer
+    game_over = false
+    indicator = $HUDLayer/HUD/FuelIndicator    
+    speedometer = $HUDLayer/HUD/Speedometer    
+    tiltometer = $HUDLayer/HUD/Tiltometer
+    altimeter = $HUDLayer/HUD/Altimeter
     pad = $LandingPad
     player = $Player
     start_pos = player.position
-    $Splash.visible = false
-    $Splash/CrashButton.visible = false
-    $Splash/LandedButton.visible = false
+    $HUDLayer/Splash.visible = false
+    $HUDLayer/Splash/CrashButton.visible = false
+    $HUDLayer/Splash/LandedButton.visible = false
     init()
     
 func init():
@@ -35,6 +38,9 @@ func init():
     
     
 func _process(delta):
+    if game_over and Input.is_action_pressed("ui_space"):
+        new_game()
+    
     var fuel = player.fuel_percent()
 
     indicator.value = fuel
@@ -54,19 +60,29 @@ func _process(delta):
     
     tiltometer.text = str(int(rad2deg(player.rotation)))
 
+    altimeter.text = str(player.altitude())
+
+    player.adjust_zoom()
+
+  
 
 func _on_Player_crashed(v):
-    $Splash.visible = true
-    $Splash/CrashButton.visible = true
+    if game_over: return
+    game_over = true
+    $HUDLayer/Splash.visible = true
+    $HUDLayer/Splash/CrashButton.visible = true
 	
 func _on_Player_landed():
-    $Splash.visible = true
-    $Splash/LandedButton.visible = true
+    if game_over: return
+    game_over = true
+    $HUDLayer/Splash.visible = true
+    $HUDLayer/Splash/LandedButton.visible = true
 
+func new_game():
+	get_tree().change_scene("res://Main.tscn")
 
 func _on_LandedButton_pressed():
-	get_tree().change_scene("res://Title.tscn")
-
+	new_game()
 
 func _on_CrashButton_pressed():
-	get_tree().change_scene("res://Title.tscn")
+	new_game()
